@@ -1,10 +1,16 @@
 import { z } from "zod";
 
 const FormSchema = z.object({
-    idenity: z
+    username: z
         .string()
-        .min(3, { message: "Idenity must be at least 3 characters." })
-        .max(50, { message: "Idenity must be no more than 50 characters." }),
+        .min(3, { message: "Username must be at least 3 characters." })
+        .max(20, { message: "Username must be no more than 20 characters." }),
+
+    email: z
+        .string()
+        .email({ message: "Please enter a valid email address." })
+        .min(5, { message: "Email must be at least 5 characters." })
+        .max(50, { message: "Email must be no more than 50 characters." }),
 
     password: z
         .string()

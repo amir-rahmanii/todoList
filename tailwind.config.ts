@@ -15,6 +15,7 @@ const config: Config = {
 				primary: {
 					DEFAULT: 'var(--primary)',
 					hover: 'var(--primary-hover)',
+					disabled: 'var(--primary-disabled)',
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',

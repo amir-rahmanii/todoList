@@ -13,6 +13,7 @@ body {
     --border: #e6e6e658;
     --primary: #DC4C3E;
     --primary-hover: #c63023;
+    --primary-disabled: #c631237d;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --input: 0 0% 89.8%;
