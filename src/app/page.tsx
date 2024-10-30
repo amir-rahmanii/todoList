@@ -1,16 +1,39 @@
 import AddTodo from "@/components/template/AddTodo/AddTodo"
 import LogoutUser from "@/components/template/LogoutUser/LogoutUser";
-import { Button } from "@/components/ui/button";
+import { verifyToken } from "@/utils/auth";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import userModel from "@/model/user";
+import dbConnected from "@/configs/db";
+import AllTodo from "@/components/template/AllTodo/AllTodo";
 
-export default function Home() {
+export default async function Home() {
+  await dbConnected();
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')?.value;
+
+  if (!token) {
+    redirect("/login")
+  }
+
+  const verifyUser = verifyToken(token);
+
+  if (!verifyUser) {
+    redirect("/login")
+  }
+
+  const userDetails = await userModel.findOne({ email: verifyUser.email }, "-password");
+
+
   return (
     <>
-      <LogoutUser />
+      <LogoutUser username={userDetails?.username} />
       <div
         className="w-full md:w-7/12 lg:w-8/12 min-h-16 my-10 mx-auto rounded-lg bg-white py-5"
       >
-            <AddTodo />
-        <div
+        <AddTodo />
+        {/* <div
           className="my-7 space-x-5 flex items-center border-b border-gray-300 pb-5 px-4"
         >
           <button
@@ -42,15 +65,9 @@ export default function Home() {
           >
             clear all
           </button>
-        </div>
-        {/* <!-- operation btns end --> */}
-        {/* 
-    <!-- todos start--> */}
-        <ul className="p-5 space-y-6 todo-container">
-          {/* <!-- todo list here --> */}
-        </ul>
-        {/* <!-- todos end--> */}
-  
+        </div> */}
+
+        <AllTodo />
       </div>
     </>
   );

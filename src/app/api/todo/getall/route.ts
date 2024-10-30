@@ -1,5 +1,6 @@
 // pages/api/auth/signup.ts
 import dbConnected from '@/configs/db'; // Make sure to import your DB connection
+import todoModel from '@/model/todo'; // Import your user model
 import userModel from '@/model/user'; // Import your user model
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/utils/auth';
@@ -23,11 +24,13 @@ export const GET = async (req: Request) => {
 
         const userDetails = await userModel.findOne({ email: verifyUser.email }, "-password");
 
-        return NextResponse.json(userDetails, { status: 200 });
+        const getAllTodo = await todoModel.find({ user : userDetails._id});
+
+
+        return NextResponse.json(getAllTodo, { status: 200 });
 
 
     } catch (error) {
-        console.error('Signup error:', error);
         return NextResponse.json({ message: "Server Error" }, { status: 500 });
     }
 }

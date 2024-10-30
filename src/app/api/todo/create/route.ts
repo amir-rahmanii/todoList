@@ -33,7 +33,6 @@ export const POST = async (req: Request) => {
 
 
     } catch (error) {
-        console.error('Signup error:', error);
         return NextResponse.json({ message: "Server Error" }, { status: 500 });
     }
 }

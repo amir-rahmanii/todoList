@@ -3,8 +3,6 @@ import axios from "axios";
 
 
 interface AuthState {
-    email: string | null;
-    username: string | null;
     loading: boolean;
     success: boolean;
     error: boolean;
@@ -14,8 +12,6 @@ interface AuthState {
 
 
 const initialState: AuthState = {
-    email: null,
-    username: null,
     loading: false,
     success: false,
     error: false,
@@ -76,9 +72,8 @@ const slice = createSlice({
         clearStatus(state) {
             state.error = false;
             state.success = false;
+            state.loading = false;
             state.message = null;
-            state.username = null;
-            state.email = null;
         }
     },
     extraReducers: (builder) => {
@@ -139,28 +134,6 @@ const slice = createSlice({
                 state.message = action.payload.message;
             })
             .addCase(logOutUser.rejected, (state, action) => {
-                state.loading = false;
-                state.success = false;
-                state.error = true;
-                state.message = action.payload as string;
-            })
-
-        //Get Me Info
-        builder
-            .addCase(getMeInfo.pending, (state) => {
-                state.loading = true;
-                state.error = false;
-                state.success = false;
-                state.message = null;
-            })
-            .addCase(getMeInfo.fulfilled, (state, action: PayloadAction<AuthState>) => {
-                state.error = false;
-                state.loading = false;
-                state.success = true;
-                state.username = action.payload.username;
-                state.email = action.payload.email;
-            })
-            .addCase(getMeInfo.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
                 state.error = true;
